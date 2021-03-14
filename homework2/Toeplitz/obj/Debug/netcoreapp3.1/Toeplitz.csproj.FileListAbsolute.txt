@@ -1,0 +1,13 @@
+D:\File\programming\practice\c#.net\homework2\Toeplitz\bin\Debug\netcoreapp3.1\Toeplitz.exe
+D:\File\programming\practice\c#.net\homework2\Toeplitz\bin\Debug\netcoreapp3.1\Toeplitz.deps.json
+D:\File\programming\practice\c#.net\homework2\Toeplitz\bin\Debug\netcoreapp3.1\Toeplitz.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework2\Toeplitz\bin\Debug\netcoreapp3.1\Toeplitz.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework2\Toeplitz\bin\Debug\netcoreapp3.1\Toeplitz.dll
+D:\File\programming\practice\c#.net\homework2\Toeplitz\bin\Debug\netcoreapp3.1\Toeplitz.pdb
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.dll
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.pdb
+D:\File\programming\practice\c#.net\homework2\Toeplitz\obj\Debug\netcoreapp3.1\Toeplitz.genruntimeconfig.cache

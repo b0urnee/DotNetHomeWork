@@ -1,0 +1,13 @@
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\bin\Debug\netcoreapp3.1\ArrayFunc.exe
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\bin\Debug\netcoreapp3.1\ArrayFunc.deps.json
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\bin\Debug\netcoreapp3.1\ArrayFunc.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\bin\Debug\netcoreapp3.1\ArrayFunc.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\bin\Debug\netcoreapp3.1\ArrayFunc.dll
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\bin\Debug\netcoreapp3.1\ArrayFunc.pdb
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.dll
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.pdb
+D:\File\programming\practice\c#.net\homework2\ArrayFunc\obj\Debug\netcoreapp3.1\ArrayFunc.genruntimeconfig.cache

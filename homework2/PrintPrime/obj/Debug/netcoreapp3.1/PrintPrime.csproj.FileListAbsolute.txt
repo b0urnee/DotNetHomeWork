@@ -1,0 +1,12 @@
+D:\File\programming\practice\c#.net\homework2\PrintPrime\bin\Debug\netcoreapp3.1\PrintPrime.exe
+D:\File\programming\practice\c#.net\homework2\PrintPrime\bin\Debug\netcoreapp3.1\PrintPrime.deps.json
+D:\File\programming\practice\c#.net\homework2\PrintPrime\bin\Debug\netcoreapp3.1\PrintPrime.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework2\PrintPrime\bin\Debug\netcoreapp3.1\PrintPrime.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework2\PrintPrime\bin\Debug\netcoreapp3.1\PrintPrime.dll
+D:\File\programming\practice\c#.net\homework2\PrintPrime\bin\Debug\netcoreapp3.1\PrintPrime.pdb
+D:\File\programming\practice\c#.net\homework2\PrintPrime\obj\Debug\netcoreapp3.1\PrintPrime.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework2\PrintPrime\obj\Debug\netcoreapp3.1\PrintPrime.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework2\PrintPrime\obj\Debug\netcoreapp3.1\PrintPrime.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework2\PrintPrime\obj\Debug\netcoreapp3.1\PrintPrime.dll
+D:\File\programming\practice\c#.net\homework2\PrintPrime\obj\Debug\netcoreapp3.1\PrintPrime.pdb
+D:\File\programming\practice\c#.net\homework2\PrintPrime\obj\Debug\netcoreapp3.1\PrintPrime.genruntimeconfig.cache

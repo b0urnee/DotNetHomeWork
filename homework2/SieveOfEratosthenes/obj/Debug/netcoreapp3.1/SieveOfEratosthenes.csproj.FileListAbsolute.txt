@@ -1,0 +1,13 @@
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\bin\Debug\netcoreapp3.1\SieveOfEratosthenes.exe
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\bin\Debug\netcoreapp3.1\SieveOfEratosthenes.deps.json
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\bin\Debug\netcoreapp3.1\SieveOfEratosthenes.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\bin\Debug\netcoreapp3.1\SieveOfEratosthenes.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\bin\Debug\netcoreapp3.1\SieveOfEratosthenes.dll
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\bin\Debug\netcoreapp3.1\SieveOfEratosthenes.pdb
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.dll
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.pdb
+D:\File\programming\practice\c#.net\homework2\SieveOfEratosthenes\obj\Debug\netcoreapp3.1\SieveOfEratosthenes.genruntimeconfig.cache
