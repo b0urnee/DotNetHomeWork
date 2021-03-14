@@ -1,0 +1,13 @@
+D:\File\programming\practice\c#.net\homework1\console_calc\bin\Debug\netcoreapp3.1\console_calc.exe
+D:\File\programming\practice\c#.net\homework1\console_calc\bin\Debug\netcoreapp3.1\console_calc.deps.json
+D:\File\programming\practice\c#.net\homework1\console_calc\bin\Debug\netcoreapp3.1\console_calc.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework1\console_calc\bin\Debug\netcoreapp3.1\console_calc.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework1\console_calc\bin\Debug\netcoreapp3.1\console_calc.dll
+D:\File\programming\practice\c#.net\homework1\console_calc\bin\Debug\netcoreapp3.1\console_calc.pdb
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.dll
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.pdb
+D:\File\programming\practice\c#.net\homework1\console_calc\obj\Debug\netcoreapp3.1\console_calc.genruntimeconfig.cache

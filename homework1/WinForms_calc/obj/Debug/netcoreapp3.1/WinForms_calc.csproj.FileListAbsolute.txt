@@ -1,0 +1,15 @@
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\bin\Debug\netcoreapp3.1\WinForms_calc.exe
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\bin\Debug\netcoreapp3.1\WinForms_calc.deps.json
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\bin\Debug\netcoreapp3.1\WinForms_calc.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\bin\Debug\netcoreapp3.1\WinForms_calc.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\bin\Debug\netcoreapp3.1\WinForms_calc.dll
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\bin\Debug\netcoreapp3.1\WinForms_calc.pdb
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.简易计算器.resources
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.csproj.GenerateResource.cache
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.dll
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.pdb
+D:\File\programming\practice\c#.net\homework1\WinForms_calc\obj\Debug\netcoreapp3.1\WinForms_calc.genruntimeconfig.cache
