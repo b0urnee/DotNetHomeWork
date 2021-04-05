@@ -1,0 +1,12 @@
+D:\File\programming\practice\c#.net\homework4\Clock\obj\Debug\netcoreapp3.1\Clock.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework4\Clock\obj\Debug\netcoreapp3.1\Clock.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework4\Clock\obj\Debug\netcoreapp3.1\Clock.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework4\Clock\bin\Debug\netcoreapp3.1\Clock.exe
+D:\File\programming\practice\c#.net\homework4\Clock\bin\Debug\netcoreapp3.1\Clock.deps.json
+D:\File\programming\practice\c#.net\homework4\Clock\bin\Debug\netcoreapp3.1\Clock.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework4\Clock\bin\Debug\netcoreapp3.1\Clock.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework4\Clock\bin\Debug\netcoreapp3.1\Clock.dll
+D:\File\programming\practice\c#.net\homework4\Clock\bin\Debug\netcoreapp3.1\Clock.pdb
+D:\File\programming\practice\c#.net\homework4\Clock\obj\Debug\netcoreapp3.1\Clock.dll
+D:\File\programming\practice\c#.net\homework4\Clock\obj\Debug\netcoreapp3.1\Clock.pdb
+D:\File\programming\practice\c#.net\homework4\Clock\obj\Debug\netcoreapp3.1\Clock.genruntimeconfig.cache

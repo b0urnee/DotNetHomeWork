@@ -1,0 +1,13 @@
+D:\File\programming\practice\c#.net\homework4\GenericList\bin\Debug\netcoreapp3.1\GenericList.exe
+D:\File\programming\practice\c#.net\homework4\GenericList\bin\Debug\netcoreapp3.1\GenericList.deps.json
+D:\File\programming\practice\c#.net\homework4\GenericList\bin\Debug\netcoreapp3.1\GenericList.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework4\GenericList\bin\Debug\netcoreapp3.1\GenericList.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework4\GenericList\bin\Debug\netcoreapp3.1\GenericList.dll
+D:\File\programming\practice\c#.net\homework4\GenericList\bin\Debug\netcoreapp3.1\GenericList.pdb
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.dll
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.pdb
+D:\File\programming\practice\c#.net\homework4\GenericList\obj\Debug\netcoreapp3.1\GenericList.genruntimeconfig.cache
