@@ -1,0 +1,13 @@
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework5\OMS\bin\Debug\netcoreapp3.1\OMS.exe
+D:\File\programming\practice\c#.net\homework5\OMS\bin\Debug\netcoreapp3.1\OMS.deps.json
+D:\File\programming\practice\c#.net\homework5\OMS\bin\Debug\netcoreapp3.1\OMS.runtimeconfig.json
+D:\File\programming\practice\c#.net\homework5\OMS\bin\Debug\netcoreapp3.1\OMS.runtimeconfig.dev.json
+D:\File\programming\practice\c#.net\homework5\OMS\bin\Debug\netcoreapp3.1\OMS.dll
+D:\File\programming\practice\c#.net\homework5\OMS\bin\Debug\netcoreapp3.1\OMS.pdb
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.dll
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.pdb
+D:\File\programming\practice\c#.net\homework5\OMS\obj\Debug\netcoreapp3.1\OMS.genruntimeconfig.cache
