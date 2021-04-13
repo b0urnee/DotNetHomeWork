@@ -1,0 +1,4 @@
+D:\File\programming\practice\c#.net\homework6\OMSTest\obj\Debug\netcoreapp3.1\OMSTest.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework6\OMSTest\obj\Debug\netcoreapp3.1\OMSTest.AssemblyInfoInputs.cache
+D:\File\programming\practice\c#.net\homework6\OMSTest\obj\Debug\netcoreapp3.1\OMSTest.AssemblyInfo.cs
+D:\File\programming\practice\c#.net\homework6\OMSTest\obj\Debug\netcoreapp3.1\OMSTest.csproj.CoreCompileInputs.cache
