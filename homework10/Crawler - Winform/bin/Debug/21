@@ -1,0 +1,787 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin-when-crossorigin" />
+    <meta name="description" content="概述 上一篇我们算是粗略的介绍了一下DDD，我们提到了实体、值类型和领域服务，也稍微讲到了DDD中的分层结构。但这只能算是一个很简单的介绍，并且我们在上篇的末尾还留下了一些问题，其中大家讨论比较多的，" />
+    <meta property="og:description" content="概述 上一篇我们算是粗略的介绍了一下DDD，我们提到了实体、值类型和领域服务，也稍微讲到了DDD中的分层结构。但这只能算是一个很简单的介绍，并且我们在上篇的末尾还留下了一些问题，其中大家讨论比较多的，" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>初探领域驱动设计（2）Repository在DDD中的应用 - 腾飞（Jesse) - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6tvK5XC6GPbg3p_sy7wzz_2291HoYACr4440iKBzQIw" />
+    <link id="MainCss" rel="stylesheet" href="/skins/simplememory/bundle-simplememory.min.css?v=uknaX_hejnSu-njQgx4Hj1R0JiPLwUhFPUlwWNmWyB4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/jesse2013/custom.css?v=DB/sw3iTGnXC/2h0J9yhKcfI5&#x2B;k=" />
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/SimpleMemory/bundle-SimpleMemory-mobile.min.css" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/jesse2013/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/jesse2013/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/jesse2013/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 159331;
+        var currentBlogApp = 'jesse2013';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2014-10-09 08:55';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=l5MLSTLemATH1_zJmhkn0AWeaJtyzREb_jcbx3aWNaQ"></script>
+    
+    
+    
+</head>
+<body class="has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a target="_blank" href="https://cloud.baidu.com/campaign/2021mid/index.html?track=cp:bokeyuan|pf:pc|pp:bokeyuan-huodong-21nianzhongdacu-neiyePCtonglanbanner|pu:21nianzhongdacu-neiyePCtonglanbanner|ci:21nzdc|kw:10224545" onclick="ga('send', 'event', 'Link', 'click', 'baidu-cpa-blog-bannerbar-pc')">
+            <div class="bannerbar aliyun forpc" style="background-size: contain; filter: brightness(0.95); background-image: url(https://img2020.cnblogs.com/blog/35695/202106/35695-20210610183724605-1725070929.jpg)">
+            </div>
+        </a>
+        <div id="bannerbar" class="bannerbar-mobile formobile">
+            <a href="https://cloud.baidu.com/campaign/2021mid/index.html?track=cp:bokeyuan|pf:mb|pp:bokeyuan-huodong-21nianzhongdacu-neiyeyidongduantonglanbanner|pu:21nianzhongdacu-neiyeyidongduantonglanbanner|ci:21nzdc|kw:10224547" onclick="ga('send', 'event', 'Link', 'click', 'baidu-cpa-blog-bannerbar-mobile')">
+                <img src="https://img2020.cnblogs.com/blog/35695/202106/35695-20210610184806729-1738888164.jpg" alt="" />
+            </a>
+        </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a></li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="/images/aggsite/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=J0WS2P2iPgaIVgXxcAhliw4AFZIpaTWxtdoNAv9eiCA" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="/images/lite-mode-check.svg" class="hide" /><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <link rel="stylesheet" type="text/css" href="https://files.cnblogs.com/jesse2013/mystle.css?v=10132013.10">
+    </div>
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/jesse2013/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/jesse2013/">腾飞（Jesse）</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/jesse2013/">
+首页</a>
+</li>
+<li>
+
+
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E8%85%BE%E9%A3%9E%EF%BC%88Jesse%29">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/jesse2013/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/jesse2013/p/ddd-repository.html">
+    <span>初探领域驱动设计（2）Repository在DDD中的应用</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<h1>概述</h1>
+<p>　　<a href="http://www.cnblogs.com/jesse2013/p/the-first-glance-of-ddd.html" target="_blank">上一篇</a>我们算是粗略的介绍了一下DDD，我们提到了实体、值类型和领域服务，也稍微讲到了DDD中的分层结构。但这只能算是一个很简单的介绍，并且我们在上篇的末尾还留下了一些问题，其中大家讨论比较多的，也是我本人之前有一些疑问的地方就是Repository。我之前觉得IRepository和三层里面的IDAL很像，为什么要整出这么个东西来；有人说用EF的话就不需要Repository了；IRepository是鸡肋等等。 我觉得这些问题都很好，我自己也觉得有问题，带着这些问题我们就来看一看Repository在DDD中到底起着一个什么样的角色，它为什么存在？有一句真理不是说“存在即合理”么？ 那我们就要找到它存在的理由，去更好的理解它，或者说我们能不能针对不同的需求去改造它呢？<span style="color: rgba(136, 136, 136, 1)">注：本文讨论的是Repository在DDD中的应用，与EF该不该用Repoistory不是同一个话题。</span></p>
+<h2>领域驱动系列</h2>
+<p>　　<a href="http://www.cnblogs.com/jesse2013/p/the-first-glance-of-ddd.html" target="_blank">初探领域驱动设计（1）为复杂业务而生</a><br>　　<a href="http://www.cnblogs.com/jesse2013/p/ddd-repository.html">初探领域驱动设计（2）Repository在DDD中的应用</a><br>　　初探领域驱动设计（3）写好单元测试<br>　　...... </p>
+<h2>目录</h2>
+<ul>
+<li><a href="#ef-and-repository">EF 与 Repository</a>　　</li>
+<li><a href="#uow-and-repository">Unit of Work 与 Repository</a>　　　　　　</li>
+<li><a href="#onion-and-repository">洋葱架构与 IRepository</a></li>
+<li><a href="#redefine-repository">重新定义 IRepository</a></li>
+<li><a href="#little-repository">可有可无的 Repository</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h1><a name="ef-and-repository"></a>EF与Repository</h1>
+<p>　　在上一篇《<a href="http://www.cnblogs.com/jesse2013/p/the-first-glance-of-ddd.html" target="_blank">初探领域驱动设计（1）为复杂业务而生</a>》中，我们已经实现了一个用户注册的例子，但是并不完整。我们还没有具体的实现Repository，即使是在测试的时候我们使用的也是一个Mock。那么今天，我们就来实现一个EntityFramework的Repository。有人说EF没有必要套一个Repository，我是同意的。但是不同的场景，不同的使用方法，我们下面再具体讲。我们在上一篇中已经提到了<a href="http://www.cnblogs.com/jesse2013/p/the-first-glance-of-ddd.html#repository_interface" target="_blank">IRepository的接口定义</a>，下面是我们的简单实现：</p>
+<p><span style="color: rgba(136, 136, 136, 1)">// EFRepository.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_87cc5ca5-904f-44f9-ba07-630c3bfc22fd" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_87cc5ca5-904f-44f9-ba07-630c3bfc22fd" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_87cc5ca5-904f-44f9-ba07-630c3bfc22fd" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Data
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> EfRepository&lt;T&gt; : IRepository&lt;T&gt; <span style="color: rgba(0, 0, 255, 1)">where</span><span style="color: rgba(0, 0, 0, 1)"> T : BaseEntity
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> DbContext _context;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> EfRepository(DbContext context)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (context == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> ArgumentNullException(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">context</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             _context =<span style="color: rgba(0, 0, 0, 1)"> context;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> T GetById(Guid id)
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Find(id);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> 
+<span style="color: rgba(0, 128, 128, 1)">21</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Insert(T entity)
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>             _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Add(entity);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">            _context.SaveChanges();
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Update(T entity)
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>             _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Attach(entity);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             _context.Entry&lt;T&gt;(entity).State =<span style="color: rgba(0, 0, 0, 1)"> EntityState.Modified;
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">            _context.SaveChanges();
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> 
+<span style="color: rgba(0, 128, 128, 1)">35</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Delete(T entity)
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>             _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Remove(entity);
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">            _context.SaveChanges();
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> 
+<span style="color: rgba(0, 128, 128, 1)">42</span> 
+<span style="color: rgba(0, 128, 128, 1)">43</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> IEnumerable&lt;T&gt; Get(Expression&lt;Func&lt;T, <span style="color: rgba(0, 0, 255, 1)">bool</span>&gt;&gt;<span style="color: rgba(0, 0, 0, 1)"> predicate)
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">45</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Where(predicate).ToList();
+</span><span style="color: rgba(0, 128, 128, 1)">46</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">47</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">48</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;<span style="color: rgba(136, 136, 136, 1); line-height: 1.5">// 应用层UserService.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_face682f-7b4d-4eb9-83a2-6b3b5a265399" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_face682f-7b4d-4eb9-83a2-6b3b5a265399" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_face682f-7b4d-4eb9-83a2-6b3b5a265399" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> UserService : IUserService
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">private</span> IRepository&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> _userRepository;
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> UserService(IRepository&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> userRepository)
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         _userRepository =<span style="color: rgba(0, 0, 0, 1)"> userRepository;
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> 
+<span style="color: rgba(0, 128, 128, 1)">10</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> User Register(<span style="color: rgba(0, 0, 255, 1)">string</span> email, <span style="color: rgba(0, 0, 255, 1)">string</span> name, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> password)
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(0, 0, 255, 1)">var</span> domainUserService = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Domain.UserService(_userRepository);
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">var</span> user =<span style="color: rgba(0, 0, 0, 1)"> domainUserService.Register(email, name, password);
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> user;
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(136, 136, 136, 1)">// 领域层UserService.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_9d2470ce-2f3b-4e35-8a6c-b469681872a6" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_9d2470ce-2f3b-4e35-8a6c-b469681872a6" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_9d2470ce-2f3b-4e35-8a6c-b469681872a6" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Domain
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> UserService
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> IRepository&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> _userRepository;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> UserService(IRepository&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> userRepsoitory)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             _userRepository =<span style="color: rgba(0, 0, 0, 1)"> userRepsoitory;
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> 
+<span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">virtual</span> User Register(<span style="color: rgba(0, 0, 255, 1)">string</span> email, <span style="color: rgba(0, 0, 255, 1)">string</span> name, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> password)
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (_userRepository.Get().Any(u =&gt; u.Email ==<span style="color: rgba(0, 0, 0, 1)"> email))
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                 <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> ArgumentException(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">The email is already taken</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> 
+<span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> user = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> User
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                 Id =<span style="color: rgba(0, 0, 0, 1)"> Guid.NewGuid(),
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                 Email =<span style="color: rgba(0, 0, 0, 1)"> email,
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 Name =<span style="color: rgba(0, 0, 0, 1)"> name,
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                 Password =<span style="color: rgba(0, 0, 0, 1)"> password
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> 
+<span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">            user.CreateShoppingCart();
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">            _userRepository.Insert(user);
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> user;
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><img style="float: right" src="https://images0.cnblogs.com/blog/554526/201410/041516459415052.png" alt="">　　<br>　　上面领域层UserService中的代码和我们上一篇中的代码是一样的，netfocus兄提出来一个问题“是不是把user对象加入到repository中就算完成注册了？” 现在看来，如果代码这样写，好像就已经完成了注册的功能。 但是如果真这样写，我又觉得问题更大，也就是为什么我会在上篇的未必留下那个问题，“Domain -&gt; Repository -&gt; Database” 和“BLL -&gt; Dal -&gt; Database” 有区别么？撇开这个问题不说，看看我们上面的EfRepository有没有什么问题？ 好用么？现在好像没有办法使用事务啊！带着这个问题我们来看看Unit Of Work能怎么帮我们。</p>
+<h1><a name="uow-and-repository"></a>&nbsp;Unit Of Work 与 Repository</h1>
+<p>　　我们EfRepository的实现中，每一次Insert/Update/Delete操作被执行之后，变更就会立即同步到数据库中去。第一，我们没有为多个操作添加一个事务的能力；第二，这会为我们带来性能上的损失。而Unit Of Work模式正好解决了我们的问题，下面是Martin Fowler 对于该模式的解释：</p>
+<blockquote>
+<p>“A Unit of Work keep track of everything you do during a business transaction that can affect the database. When you’re done, it figures out everything that need to be done to alter the database as a result of your work.”</p>
+<p>Unit of Work负责跟踪所有业务事务过程中数据库的变更。当事务完成之后，它找出需要处理的变更，并更新数据库。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</blockquote>
+<p>　　正如我们大家一直讨论的那样，在EF中，DBContext它本身就已经是一个Unit Of Work的模式，因为上面说的功能它都有。那我们有必要自己再给它包上一层吗？我的答案是肯定的，这个和我们为Repository建立接口是一样的，EF中的IDbSet就是一个Repository模式，但是他们都是EF里面的东西，如果哪天我们换成NHibernate了，我们不可能为了这一个接口和基类把EF这个dll也加进来是么？ 我们要做的并不多，因为DbContext.SaveChanges它本身就是有事务的，所以我们只需要创建一个带有SaveChanges的接口就可以了。</p>
+<p><span style="color: rgba(136, 136, 136, 1)">// IUnitOfWork.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_e1bcf81c-4bd4-426e-9005-5addd8a3b785" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_e1bcf81c-4bd4-426e-9005-5addd8a3b785" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_e1bcf81c-4bd4-426e-9005-5addd8a3b785" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Core.Data
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">interface</span><span style="color: rgba(0, 0, 0, 1)"> IUnitOfWork : IDisposable
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>         <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> SaveChanges();
+</span><span style="color: rgba(0, 128, 128, 1)">6</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>　　接着就是让我们的Context，继承DbContex和我们上面的接口。</p>
+<div class="cnblogs_code"><img id="code_img_closed_c1f9e6d2-1332-41fe-951d-c1323afb65be" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_c1f9e6d2-1332-41fe-951d-c1323afb65be" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_c1f9e6d2-1332-41fe-951d-c1323afb65be" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Data
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEfContext : DbContext, IUnitOfWork
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEfContext() { }
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> RepositoryAndEfContext(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> nameOrConnectionString)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>             : <span style="color: rgba(0, 0, 255, 1)">base</span><span style="color: rgba(0, 0, 0, 1)">(nameOrConnectionString)
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             Configuration.LazyLoadingEnabled = <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> 
+<span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">protected</span> <span style="color: rgba(0, 0, 255, 1)">override</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> OnModelCreating(DbModelBuilder modelBuilder)
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> typesToRegister =<span style="color: rgba(0, 0, 0, 1)"> Assembly.GetExecutingAssembly().GetTypes()
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             .Where(type =&gt; !<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(type.Namespace))
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             .Where(type =&gt; type.BaseType != <span style="color: rgba(0, 0, 255, 1)">null</span> 
+<span style="color: rgba(0, 128, 128, 1)">18</span>                 &amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> type.BaseType.IsGenericType
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                 &amp;&amp; type.BaseType.GetGenericTypeDefinition() == <span style="color: rgba(0, 0, 255, 1)">typeof</span>(EntityTypeConfiguration&lt;&gt;<span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> 
+<span style="color: rgba(0, 128, 128, 1)">21</span>             <span style="color: rgba(0, 0, 255, 1)">foreach</span> (<span style="color: rgba(0, 0, 255, 1)">var</span> type <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> typesToRegister)
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 dynamic configurationInstance =<span style="color: rgba(0, 0, 0, 1)"> Activator.CreateInstance(type);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">                modelBuilder.Configurations.Add(configurationInstance);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">...or do it manually below. For example,
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">modelBuilder.Configurations.Add(new LanguageMap());</span>
+<span style="color: rgba(0, 128, 128, 1)">28</span> 
+<span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 0, 255, 1)">base</span><span style="color: rgba(0, 0, 0, 1)">.OnModelCreating(modelBuilder);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="line-height: 1.5">　　哦，对了，别忘了把Repository里面的SaveChanges方法去掉。</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_3f3a2e2d-1ddc-45d6-97f6-8ad8b4fd5d1d" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_3f3a2e2d-1ddc-45d6-97f6-8ad8b4fd5d1d" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_3f3a2e2d-1ddc-45d6-97f6-8ad8b4fd5d1d" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Data
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> EfRepository&lt;T&gt; : IRepository&lt;T&gt; <span style="color: rgba(0, 0, 255, 1)">where</span><span style="color: rgba(0, 0, 0, 1)"> T : BaseEntity
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> DbContext _context;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> EfRepository(IUnitOfWork uow)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (uow == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> ArgumentNullException(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">uow</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             _context = uow <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> DbContext;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> T GetById(Guid id)
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Find(id);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> 
+<span style="color: rgba(0, 128, 128, 1)">21</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Insert(T entity)
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>             _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Add(entity);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> 
+<span style="color: rgba(0, 128, 128, 1)">27</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Update(T entity)
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>             _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Attach(entity);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             _context.Entry&lt;T&gt;(entity).State =<span style="color: rgba(0, 0, 0, 1)"> EntityState.Modified;
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> 
+<span style="color: rgba(0, 128, 128, 1)">34</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Delete(T entity)
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>             _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Remove(entity);
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> 
+<span style="color: rgba(0, 128, 128, 1)">40</span> 
+<span style="color: rgba(0, 128, 128, 1)">41</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> IEnumerable&lt;T&gt; Get(Expression&lt;Func&lt;T, <span style="color: rgba(0, 0, 255, 1)">bool</span>&gt;&gt;<span style="color: rgba(0, 0, 0, 1)"> predicate)
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">43</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Where(predicate).ToList();
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">45</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">46</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;　　那么我们应用层的UserService就可以这样写了。</p>
+<div class="cnblogs_code"><img id="code_img_closed_c07634ed-f942-4edd-ae0e-e0b3b0b03829" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_c07634ed-f942-4edd-ae0e-e0b3b0b03829" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_c07634ed-f942-4edd-ae0e-e0b3b0b03829" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Service
+{
+    </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> UserService : IUserService
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">private</span> IRepository&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> _userRepository;
+        </span><span style="color: rgba(0, 0, 255, 1)">private</span> IUnitOfWork _uow =<span style="color: rgba(0, 0, 0, 1)"> 
+            EngineContext.Current.Resolve</span>&lt;IUnitOfWork&gt;<span style="color: rgba(0, 0, 0, 1)">();
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> UserService(IRepository&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> userRepository)
+        {
+            _userRepository </span>=<span style="color: rgba(0, 0, 0, 1)"> userRepository;
+        }
+
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> User Register(<span style="color: rgba(0, 0, 255, 1)">string</span> email, <span style="color: rgba(0, 0, 255, 1)">string</span> name, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> password)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> domainUserService = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Domain.UserService(_userRepository);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> user =<span style="color: rgba(0, 0, 0, 1)"> domainUserService.Register(email, name, password);
+            
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 在调用SaveChnages()之前，做其它的更新操作
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 它们会一起在同一个事务中执行。</span>
+<span style="color: rgba(0, 0, 0, 1)">            _uow.SaveChanges();
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> user;
+        }
+    }
+}</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>　　如果光看这段代码有没有觉得很奇怪？没有任何对_userRepository的操作，就做了SaveChanges，因为我们在领域服务里面就已经把新创建的用户实体放到那个userRepository中去了。我想这个问题@田园的蟋蟀纠结过很久:） ，也就是领域服务那里面持有repository的引用，它可以自己将要更新的实体添加到repository中，但是如果对于一些不涉及到领域服务的操作，那这一点就需要在应用层来做了，比如添加商品到购物车的操作。</p>
+<p><span style="color: rgba(136, 136, 136, 1)">// 应用层ShoppingCartService.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_cfadf0d9-b297-4d4b-8c8d-1e3eb484f0ac" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_cfadf0d9-b297-4d4b-8c8d-1e3eb484f0ac" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_cfadf0d9-b297-4d4b-8c8d-1e3eb484f0ac" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Service
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> ShoppingCartService : IShoppingCartService
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> IRepository&lt;ShoppingCart&gt;<span style="color: rgba(0, 0, 0, 1)"> _shoppingCartRepository;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> IRepository&lt;Product&gt;<span style="color: rgba(0, 0, 0, 1)"> _productRepository;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> IUnitOfWork _uow;
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> ShoppingCartService(IUnitOfWork uow,
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             IRepository&lt;ShoppingCart&gt;<span style="color: rgba(0, 0, 0, 1)"> shoppingCartRepository,
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             IRepository&lt;Product&gt;<span style="color: rgba(0, 0, 0, 1)"> productRepository)
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             _uow =<span style="color: rgba(0, 0, 0, 1)"> uow;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>             _shoppingCartRepository =<span style="color: rgba(0, 0, 0, 1)"> shoppingCartRepository;
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             _productRepository =<span style="color: rgba(0, 0, 0, 1)"> productRepository;
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> 
+<span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> ShoppingCart AddToCart(Guid cartId, 
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            Guid productId, 
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> quantity)
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> cart =<span style="color: rgba(0, 0, 0, 1)"> _shoppingCartRepository.GetById(cartId);
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> product =<span style="color: rgba(0, 0, 0, 1)"> _productRepository.GetById(productId);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">            cart.AddItem(product, quantity);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> 
+<span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">            _shoppingCartRepository.Update(cart);
+</span><span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">            _uow.SaveChanges();
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> cart;
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<p><strong><img style="float: right" src="https://images0.cnblogs.com/blog/554526/201410/041634019251473.png" alt=""></strong>　　这就是属于职责定义不明确的问题，特别是上面注册用户的例子。应用层也有_userRepository，并且领域服务还给我返回了一个user的实体，那我是把它加到这个_userRepository中呢还是不加好呢？</p>
+<p>　　我觉得我们应该有这样的一个定义，<strong>在领域层那里不使用repository的更新类操作（即Insert/Update/Delete)，只使用查询类操作即（GetById,或者是Get)。把所有的更新类操作都放到应用层，这样由应用层去决定什么时候把实体更新到repository，以及什么时候去提交到数据库中。</strong>那我们就彻底与持久层，甚至领域实体生命期管理的功能撇开有关系了，从此用更OO的方式专注于业务。</p>
+<p>　　后面我们要做的更改就是把_userRepository.Insert(user)从我们User的领域服务中移除掉，并且在应用层的Register方法中加入这句话。&nbsp;我想到这里，也算是回答了我自己的问题: IRepository正如它的名字一样，它就像一个容器，允许我们把东西放进去或者取出来，它离真正的数据库还有一步之遥，并且通过Unit Of Work，把对事务以及持久化的控制都交到了外面。而不是像DAL那样直接就反映到数据库中去了。除此之外呢？IRepository解除了领域层对基础设施层的依懒，这个也是大家经常提到了Repository的优点之一。但是未必这一点一定非得需要IRepository，把IDAL接口移个位置同样也可以实现，不信您看看洋葱架构。</p>
+<h1><a name="onion-and-repository"></a>洋葱架构与IRepository</h1>
+<p>　　洋葱架构很早就有，只不过08年的时候<a href="http://jeffreypalermo.com/blog/the-onion-architecture-part-1/" target="_blank">Jeffery</a>给它取了个名字，让它成为了一个模式。说起来好像很高大上，但是希望大家不要被这些名字所迷惑，所正如Jeffery所说，在这种设计有了一个名字之后，更方便大家去讨论和传播以及使用这种模式。 并且洋葱架构也是一种多层架构，所以会出现“传统” 的多层架构 和“现代”的多层架构。 我更是认为，所谓的洋葱架构只是作出了一点点思想层面上的转变，仅此而已。 究竟是哪一点思想上的转变，可以让它成为一种模式呢？ 依懒关系！</p>
+<p>&nbsp;<img style="float: left" src="https://images0.cnblogs.com/blog/554526/201410/011354262222248.png" alt="">　　Jeffery说在传统的多层架构中，上层对下层有着较强的依懒关系，UI没了BLL就没法工作，BLL少了DAL也无法正常运行。当然他说这句话的时候是08年，并且他的确是在前面加了“传统” 两个字。&nbsp;我们很难找到到底是什么时候，这种传统的多层架构演变成了“现代” 的多层架构，但是我们能知道的是在08年7月以后我们对于多层架构又有了一个新的名词。即便如此，它的转变却是非常简单的 —— 也就是把IDAL接口从DAL层分离出去。</p>
+<p>　　如果把IDAL接口定义在DataAccess层，第一是造成了BLL对DataAccess的依懒；第二是造成了IDAL的责任不明确。如果说小A负责开发BLL，小C负责开发DAL，他们是不是需要协调该怎么样去定义IDAL接口？ 是DAL为BLL服务，还是BLL的最终目地是把自己移交给DAL？ 在最开始的时候，大家对IDAL的定义是为了支持不同的访问层设计，大家想的都是现在我们用SQL，将来有可能会有MySql。所以IDAL放在哪里也就无所谓了，为了方便就直接和实现一起放在DAL吧。</p>
+<p>　　<strong>把IDAL接口从DAL移出去之后会发生什么 ？</strong></p>
+<p>&nbsp;<img style="float: right" src="https://images0.cnblogs.com/blog/554526/201410/011426200348027.png" alt="">　　在把IDAL接口移到BLL层之后，箭头的方向就变了。现在一切都是以BLL为中心，BLL也不需要依懒于任何其它层了，作为独立的一块，我们可以更容易的进行单元测试，重构等。另外也明确了IDAL是为BLL服务的，也就是解决了我们上面提到的第二个问题。</p>
+<p>　　这个一个很简单的转变就是洋葱架构的主要思想，如果你还不能很好的领悟洋葱架构和传统多层架构之间的区别，希望下面这张图能用最直接，最简单的方式告诉你。</p>
+<p><strong>传统多层架构与现代（洋葱架构）多层架构的区别</strong></p>
+<p><span style="color: rgba(0, 0, 0, 1)"><strong><img src="https://images0.cnblogs.com/blog/554526/201410/011450428003845.png" alt=""></strong></span></p>
+<p><span style="color: rgba(0, 0, 0, 1)"><strong>　　</strong>你要是愿意，把IDAL直接放到Bll里面也是可以的。当Jeffery给这种架构起名叫“洋葱架构”再往前推4年，DDD问世的时候已经包含了这种思想。IRepository属于领域层而非基础架构层中的数据访问模块，就直接避免了领域层对基础设施层的依懒，或者说不定这种思想也是从DDD引申出来的，所以你会发现很多人现在依然用DAL。但是并没有什么问题，因为在这种新的多层架构下，扩展性和可维护性同样也可以被保持的很好。</span></p>
+<h1><a name="redefine-repository"></a>重新定义IRepository&nbsp;</h1>
+<p>　　现在，我们再回过头去看Repository。它的两大职责：</p>
+<ol>
+<li>对领域实体的生命周期进行管理（从数据库重建，以及持久化到数据库） &nbsp;——被推迟到了应用层</li>
+<li>解除领域层对基础设施的依懒&nbsp;</li>
+</ol>
+<p>　　在第一点生效后，所有更新类的操作都推迟到应用层去执行。那IRepository中的那些更新类方法放在领域层是不是就多余了呢？ 毕竟我们现在只需要用到查询的功能。我们可以单独建一个IQuery的接口给领域层使用。</p>
+<p><span style="color: rgba(136, 136, 136, 1)">// IQuery.cs&nbsp;</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_3d08fd90-be3e-472e-837f-4a28799bf0c4" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_3d08fd90-be3e-472e-837f-4a28799bf0c4" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_3d08fd90-be3e-472e-837f-4a28799bf0c4" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Core.Data
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">interface</span> IQuery&lt;T&gt;
+<span style="color: rgba(0, 128, 128, 1)">4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">5</span> <span style="color: rgba(0, 0, 0, 1)">        T GetById(Guid id);
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>         IQueryable&lt;T&gt; Table { <span style="color: rgba(0, 0, 255, 1)">get</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">8</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;<span style="color: rgba(136, 136, 136, 1); line-height: 1.5">// IRepository.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_224d212a-dd4d-4b11-8282-a1742ad23630" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_224d212a-dd4d-4b11-8282-a1742ad23630" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_224d212a-dd4d-4b11-8282-a1742ad23630" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Core.Data
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">partial</span> <span style="color: rgba(0, 0, 255, 1)">interface</span> IRepository&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">:
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         IQuery&lt;T&gt; <span style="color: rgba(0, 0, 255, 1)">where</span><span style="color: rgba(0, 0, 0, 1)"> T : BaseEntity
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Insert(T entity);
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Update(T entity);
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Delete(T entity);
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;<span style="line-height: 1.5">　　我们直接让IRepository继承了IQuery，IQuery就相当于IRepository的一个功能子集，只提供读的功能。 而在EfRepository中，我们只要暴露DbSet&lt;T&gt;.AsQueryAble()就可以了。</span></p>
+<p><span style="line-height: 1.5; color: rgba(136, 136, 136, 1)">// EfRepository IQuery的实体部分</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_795017cf-37c2-448a-b1b2-37077bd13343" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_795017cf-37c2-448a-b1b2-37077bd13343" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_795017cf-37c2-448a-b1b2-37077bd13343" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> T GetById(Guid id)
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">return</span> _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().Find(id);
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 255, 1)">public</span> IQueryable&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)"> Table
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>     <span style="color: rgba(0, 0, 255, 1)">get</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>         <span style="color: rgba(0, 0, 255, 1)">return</span> _context.Set&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">().AsQueryable();
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(136, 136, 136, 1); line-height: 1.5">// 领域层 UserService.cs</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_31ad7e35-707b-4476-be07-2c383fbf5cbd" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_31ad7e35-707b-4476-be07-2c383fbf5cbd" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_31ad7e35-707b-4476-be07-2c383fbf5cbd" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> RepositoryAndEf.Domain
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> UserService
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> IQuery&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> _userQuery;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> UserService(IQuery&lt;User&gt;<span style="color: rgba(0, 0, 0, 1)"> userQuery)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             _userQuery =<span style="color: rgba(0, 0, 0, 1)"> userQuery;
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> 
+<span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">virtual</span> User Register(<span style="color: rgba(0, 0, 255, 1)">string</span> email, <span style="color: rgba(0, 0, 255, 1)">string</span> name, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> password)
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (_userQuery.Table.Any(u =&gt; u.Email ==<span style="color: rgba(0, 0, 0, 1)"> email))
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                 <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> ArgumentException(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">The email is already taken</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> 
+<span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> user = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> User
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                 Id =<span style="color: rgba(0, 0, 0, 1)"> Guid.NewGuid(),
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                 Email =<span style="color: rgba(0, 0, 0, 1)"> email,
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 Name =<span style="color: rgba(0, 0, 0, 1)"> name,
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                 Password =<span style="color: rgba(0, 0, 0, 1)"> password
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> 
+<span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">            user.CreateShoppingCart();
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> user;
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="line-height: 1.5; color: rgba(136, 136, 136, 1)">// 客户端调用应用层Service代码</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_5cfc642f-7d54-4c3e-88e2-d29a2f2110a4" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_5cfc642f-7d54-4c3e-88e2-d29a2f2110a4" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_5cfc642f-7d54-4c3e-88e2-d29a2f2110a4" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">var</span> uow = <span style="color: rgba(0, 0, 255, 1)">new</span> RepositoryAndEfContext(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ConnStr</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 255, 1)">var</span> userRepository = <span style="color: rgba(0, 0, 255, 1)">new</span> EfRepository&lt;Domain.User&gt;<span style="color: rgba(0, 0, 0, 1)">(uow);
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(0, 0, 255, 1)">var</span> userService = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> UserService(uow, userRepository);
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> <span style="color: rgba(0, 0, 255, 1)">var</span> newUser =<span style="color: rgba(0, 0, 0, 1)"> userService.Register(
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>     <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hellojesseliu@outlook.com</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, 
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>     <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Jesse Liu</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, 
+</span><span style="color: rgba(0, 128, 128, 1)">7</span>     <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">jesseliu</span><span style="color: rgba(128, 0, 0, 1)">"</span>);</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;<span style="line-height: 1.5">　现在，恐怕你再想在领域模型里面去使用Repository的更新类操作也不行了吧。 Table作为IQueryable返回，那我们想怎么查就随意了。因为是IQueryable，所以也是只会返回我们所查询的内容，和直接用EF查询是一个道理。下面是我们_userQuery.Table.Any()所生成的SQL语句。</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_cd14cdac-1ffa-41d0-87a5-e3adf3f9d780" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt=""><img id="code_img_opened_cd14cdac-1ffa-41d0-87a5-e3adf3f9d780" class="code_img_opened" style="display: none" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_cd14cdac-1ffa-41d0-87a5-e3adf3f9d780" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">exec</span> sp_executesql N<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">SELECT 
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(255, 0, 0, 1)">    CASE WHEN ( EXISTS (SELECT 
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(255, 0, 0, 1)">        1 AS [C1]
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> <span style="color: rgba(255, 0, 0, 1)">        FROM [dbo].[Users] AS [Extent1]
+</span><span style="color: rgba(0, 128, 128, 1)">5</span> <span style="color: rgba(255, 0, 0, 1)">        WHERE ([Extent1].[Email] = @p__linq__0) OR (([Extent1].[Email] IS NULL) AND (@p__linq__0 IS NULL))
+</span><span style="color: rgba(0, 128, 128, 1)">6</span> <span style="color: rgba(255, 0, 0, 1)">    )) THEN cast(1 as bit) ELSE cast(0 as bit) END AS [C1]
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> <span style="color: rgba(255, 0, 0, 1)">    FROM  ( SELECT 1 AS X ) AS [SingleRowTable1]</span><span style="color: rgba(255, 0, 0, 1)">'</span>,N<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">@p__linq__0 nvarchar(4000)</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(0, 128, 0, 1)">@p__linq__0</span><span style="color: rgba(128, 128, 128, 1)">=</span>N<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">hellojesseliu@outlook.com</span><span style="color: rgba(255, 0, 0, 1)">'</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<h1>&nbsp;<a name="little-repository"></a>可有可无的Repository</h1>
+<p>　　我们把IRepository移出领域层之后，再加上我们对洋葱架构的理解。我们就可以知道Repository在应用层已经可以被替换成别的东西，IDAL也可以啊:)。当然有人也许会建议直接拿EF来用多好，其实我不建议这样去做，考虑到以后把EF换掉的可能性。并且我们加这样一个接口真的不会碍着我们什么事。如果有人觉得在读取数据的时候加一个Repository在中间，少掉了很多EF提供的功能，觉得很不爽，倒是可以试试像我们的IQuery接口一样直接对DbSet来查询。我们甚至可以学习CQRS架构，将“读”的服务完全分离开，我们就可以单独针对“读”来独立设计。</p>
+<p>　　但是Repository给我们带来的优点，这些优点也是我们不能轻易丢掉它的原因：</p>
+<ol>
+<li>提供一个简单的模型，来获取持久对象并管理期生命周期</li>
+<li>把应用和领域设计从持久技术、多种数据库策略解耦出来</li>
+<li>容易被替换成哑实现（Mock)以便我们在测试中使用</li>
+</ol>
+<p>　　如果你的项目属于短期的项目，或者说你不用考虑更换数据访问层，那么你就可以忽略第一和第二个优点。而第三个优点，借助于一些测试框架我们也可以实现，所以如果你不想用Repository，那就不用，前提条件是你所做的项目允许你这样做，并且你也能够找到好的替代方案来弥补Repository的优势。比如说对洋葱架构中的IDAL再进行一些改造等等。关于更多单元测试的话题，我们将在下一篇中一起来探讨。如果大家对Repository有什么其它的看法，也欢迎一起参与讨论。</p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2014-10-09 08:55</span>&nbsp;
+<a href="https://www.cnblogs.com/jesse2013/">腾飞（Jesse)</a>&nbsp;
+阅读(<span id="post_view_count">14626</span>)&nbsp;
+评论(<span id="post_comment_count">33</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=3959225" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(3959225);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '3959225', targetLink: 'https://www.cnblogs.com/jesse2013/p/ddd-repository.html', title: '初探领域驱动设计（2）Repository在DDD中的应用' })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/10.3.1/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 159331, cb_blogApp = 'jesse2013', cb_blogUserGuid = 'dfb583e1-aefc-e211-8d02-90b11c0b17d6';
+    var cb_entryId = 3959225, cb_entryCreatedDate = '2014-10-09 08:55', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_card1"></div>
+    <div id="cnblogs_c2" class="under-post-card">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2021 腾飞（Jesse)
+<br /><span id="poweredby">Powered by .NET 5.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8L-rpLgFVEJMgssCVvNUAjtZKFc9yrAbl6CxdIyZsE8UvNRbQ5QbMrrKsQL-6k1L8hkWZUtcVLmDNUqhD1sjNA6-MZtKFgbA9oIo2a6eV3x9URuFKWcrsx52q72lVd1P0KtmUbo9fMKCrtB4S1zujxA" />
+</body>
+</html>
