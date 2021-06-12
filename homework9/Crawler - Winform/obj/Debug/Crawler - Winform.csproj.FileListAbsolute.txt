@@ -1,0 +1,20 @@
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\bin\Debug\Crawler - Winform.exe.config
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\bin\Debug\Crawler - Winform.exe
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\bin\Debug\Crawler - Winform.pdb
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler - Winform.csprojAssemblyReference.cache
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler___Winform.Form1.resources
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler___Winform.Properties.Resources.resources
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler - Winform.csproj.GenerateResource.cache
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler - Winform.csproj.CoreCompileInputs.cache
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler - Winform.exe
+D:\桌面\CSharpHomework-master\Week 9\爬虫 - Winform\Crawler - Winform\obj\Debug\Crawler - Winform.pdb
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\bin\Debug\Crawler - Winform.exe.config
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\bin\Debug\Crawler - Winform.exe
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\bin\Debug\Crawler - Winform.pdb
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler - Winform.csprojAssemblyReference.cache
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler___Winform.Form1.resources
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler___Winform.Properties.Resources.resources
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler - Winform.csproj.GenerateResource.cache
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler - Winform.csproj.CoreCompileInputs.cache
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler - Winform.exe
+D:\File\programming\practice\c#.net\homework9\Crawler - Winform\obj\Debug\Crawler - Winform.pdb
